@@ -12,6 +12,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="FonteOS — Strategy and execution layer for Claude Code">
 <meta name="twitter:description" content="Persistent memory, project isolation, and session continuity for solo founders and small teams using Claude Code.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='28' font-size='28'>⛲</text></svg>">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 
@@ -30,19 +31,17 @@
   --accent-glow: rgba(37, 99, 235, 0.04);
   --accent-surface: rgba(37, 99, 235, 0.06);
   --green: #16a34a;
-  --green-dim: rgba(22, 163, 74, 0.08);
   --green-surface: rgba(22, 163, 74, 0.06);
   --amber: #d97706;
   --amber-surface: rgba(217, 119, 6, 0.06);
   --purple: #7c3aed;
   --purple-surface: rgba(124, 58, 237, 0.06);
-  --red: #dc2626;
-  --red-surface: rgba(220, 38, 38, 0.06);
   --mono: 'SF Mono', 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
   --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --section-gap: 120px;
 }
 
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; scroll-padding-top: 80px; }
 
 body {
   background: var(--bg);
@@ -55,28 +54,36 @@ body {
   overflow-x: hidden;
 }
 
+.skip-nav { position: absolute; top: -40px; left: 16px; background: var(--accent); color: #fff; padding: 8px 16px; border-radius: 0 0 6px 6px; z-index: 200; font-size: 13px; text-decoration: none; transition: top 0.2s; }
+.skip-nav:focus { top: 0; }
+
 ::selection { background: var(--accent); color: #fff; }
 
 .container { max-width: 1080px; margin: 0 auto; padding: 0 32px; }
 
+.scroll-progress { position: fixed; top: 0; left: 0; height: 2px; background: var(--accent); z-index: 200; width: 0%; transition: width 0.1s linear; }
+
 /* ── Nav ── */
-nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  padding: 16px 0;
-  background: rgba(250, 250, 249, 0.88);
-  backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
-  border-bottom: 1px solid transparent;
-  transition: border-color 0.3s;
-}
+nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 16px 0; background: rgba(250,250,249,0.88); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border-bottom: 1px solid transparent; transition: border-color 0.3s; }
 nav.scrolled { border-bottom-color: var(--border); }
 nav .container { display: flex; justify-content: space-between; align-items: center; }
 .nav-logo { font-family: var(--mono); font-size: 15px; color: var(--text); text-decoration: none; letter-spacing: 0.02em; font-weight: 600; }
 .nav-logo .logo-accent { color: var(--accent); }
 .nav-links { display: flex; gap: 28px; align-items: center; }
-.nav-links a { color: var(--text-dim); text-decoration: none; font-size: 13px; letter-spacing: 0.02em; transition: color 0.2s; }
+.nav-links a { color: var(--text-dim); text-decoration: none; font-size: 13px; letter-spacing: 0.02em; transition: color 0.2s; position: relative; }
 .nav-links a:hover { color: var(--text); }
+.nav-links a.active { color: var(--text); }
+.nav-links a.active::after { content: ''; position: absolute; bottom: -4px; left: 0; right: 0; height: 1.5px; background: var(--accent); border-radius: 1px; }
 .nav-gh { font-family: var(--mono); font-size: 12px; color: var(--text) !important; border: 1px solid var(--border-light); padding: 7px 16px; border-radius: 6px; transition: border-color 0.2s, background 0.2s !important; }
 .nav-gh:hover { border-color: var(--accent) !important; background: var(--accent-glow) !important; }
+.nav-gh.active::after { display: none; }
+.nav-toggle { display: none; background: none; border: none; cursor: pointer; padding: 8px; }
+.nav-toggle span { display: block; width: 18px; height: 2px; background: var(--text); margin: 4px 0; transition: transform 0.2s, opacity 0.2s; }
+.nav-toggle.open span:nth-child(1) { transform: rotate(45deg) translate(3px, 5px); }
+.nav-toggle.open span:nth-child(2) { opacity: 0; }
+.nav-toggle.open span:nth-child(3) { transform: rotate(-45deg) translate(3px, -5px); }
+
+*:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
 
 /* ── Hero ── */
 .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding-top: 80px; }
@@ -93,18 +100,16 @@ nav .container { display: flex; justify-content: space-between; align-items: cen
 .hero-note { font-family: var(--mono); font-size: 11px; color: var(--text-muted); letter-spacing: 0.08em; margin-top: 20px; opacity: 0; animation: fadeUp 0.7s ease forwards 0.75s; }
 
 /* ── Section shared ── */
-section { padding: 112px 0; }
+section { padding: var(--section-gap) 0; }
 .section-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin-bottom: 14px; }
 .section-title { font-size: clamp(26px, 3.5vw, 42px); font-weight: 700; line-height: 1.15; letter-spacing: -0.025em; margin-bottom: 20px; color: var(--text); }
 .section-desc { color: var(--text-dim); font-size: 15px; line-height: 1.75; max-width: 480px; margin-bottom: 60px; }
 
-/* ── Problem ── */
+/* ── Problem (asymmetric grid) ── */
 .problem { border-top: 1px solid var(--border); }
-.problem-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); margin-top: 56px; }
-.problem-card { background: var(--bg); padding: 40px 36px; position: relative; transition: background 0.25s; }
+.problem-grid { display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 1px; background: var(--border); margin-top: 56px; }
+.problem-card { background: var(--bg); padding: 40px 36px; transition: background 0.25s; }
 .problem-card:hover { background: var(--bg-card); }
-.problem-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--accent-dim), transparent); opacity: 0; transition: opacity 0.25s; }
-.problem-card:hover::before { opacity: 1; }
 .problem-number { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; color: var(--text-muted); margin-bottom: 20px; }
 .problem-card h3 { font-size: 17px; font-weight: 600; line-height: 1.4; letter-spacing: -0.01em; color: var(--text); margin-bottom: 12px; }
 .problem-card p { font-size: 13px; color: var(--text-dim); line-height: 1.7; }
@@ -112,22 +117,42 @@ section { padding: 112px 0; }
 /* ── How it works ── */
 .how { border-top: 1px solid var(--border); }
 .steps { display: flex; flex-direction: column; }
-.step { display: grid; grid-template-columns: 56px 1fr; gap: 36px; padding: 44px 0; border-bottom: 1px solid var(--border); align-items: start; transition: background 0.25s; }
+.step { display: grid; grid-template-columns: 56px 1fr; gap: 36px; padding: 44px 0; border-bottom: 1px solid var(--border); align-items: start; }
 .step:last-child { border-bottom: none; }
-.step:hover { background: var(--accent-glow); margin: 0 -32px; padding: 44px 32px; }
 .step-num { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; color: var(--text-muted); padding-top: 4px; }
 .step-body h3 { font-size: 19px; font-weight: 600; letter-spacing: -0.015em; margin-bottom: 8px; color: var(--text); }
 .step-body p { font-size: 14px; color: var(--text-dim); line-height: 1.75; max-width: 500px; }
-.step-code { display: inline-block; font-family: var(--mono); font-size: 12px; color: var(--accent); background: var(--accent-surface); border: 1px solid rgba(37, 99, 235, 0.12); padding: 3px 10px; margin-top: 12px; letter-spacing: 0.05em; border-radius: 4px; }
+.step-code { display: inline-block; font-family: var(--mono); font-size: 12px; color: var(--accent); background: var(--accent-surface); border: 1px solid rgba(37,99,235,0.12); padding: 3px 10px; margin-top: 12px; letter-spacing: 0.05em; border-radius: 4px; }
+
+/* ── ADHD (promoted, elevated bg for rhythm break) ── */
+.adhd { border-top: 1px solid var(--border); background: var(--bg-elevated); padding: var(--section-gap) 0; }
+.adhd-intro { max-width: 580px; margin-bottom: 56px; }
+.adhd-intro p { font-size: 15px; color: var(--text-dim); line-height: 1.75; margin-top: 16px; }
+.adhd-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+.adhd-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 36px 32px; transition: border-color 0.25s, transform 0.25s; }
+.adhd-card:hover { border-color: var(--border-light); transform: translateY(-2px); }
+.adhd-card-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 16px; display: inline-block; padding: 3px 10px; border-radius: 4px; }
+.adhd-card h3 { font-size: 17px; font-weight: 600; letter-spacing: -0.01em; margin-bottom: 10px; color: var(--text); }
+.adhd-card p { font-size: 13px; color: var(--text-dim); line-height: 1.75; }
+.adhd-card ul { list-style: none; margin-top: 14px; }
+.adhd-card li { font-size: 13px; color: var(--text-dim); line-height: 1.7; padding: 4px 0; padding-left: 20px; position: relative; }
+.adhd-card li::before { content: ''; position: absolute; left: 0; top: 12px; width: 6px; height: 6px; border-radius: 50%; }
+.label-ships { color: var(--green); background: var(--green-surface); }
+.label-builds { color: var(--accent); background: var(--accent-surface); }
+.label-monitor { color: var(--amber); background: var(--amber-surface); }
+.label-focus { color: var(--purple); background: var(--purple-surface); }
+.adhd-card.card-ships li::before { background: var(--green); }
+.adhd-card.card-builds li::before { background: var(--accent); }
+.adhd-card.card-monitor li::before { background: var(--amber); }
+.adhd-card.card-focus li::before { background: var(--purple); }
 
 /* ── Philosophy ── */
 .philosophy { border-top: 1px solid var(--border); }
 .philosophy-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
-.philosophy-text { }
 .philosophy-text h3 { font-size: 19px; font-weight: 600; letter-spacing: -0.015em; margin-bottom: 12px; color: var(--text); margin-top: 36px; }
 .philosophy-text h3:first-child { margin-top: 0; }
 .philosophy-text p { font-size: 14px; color: var(--text-dim); line-height: 1.75; }
-.layer-diagram { display: flex; flex-direction: column; gap: 2px; }
+.layer-diagram { display: flex; flex-direction: column; gap: 2px; position: sticky; top: 100px; }
 .layer-block { padding: 24px 28px; border-radius: 8px; }
 .layer-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 6px; }
 .layer-name { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
@@ -153,64 +178,33 @@ section { padding: 112px 0; }
 .arch-layer-tag { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); min-width: 90px; }
 .arch-layer-name { font-size: 14px; font-weight: 500; color: var(--text); margin-right: auto; }
 .arch-layer-desc { font-size: 12px; color: var(--text-dim); text-align: right; }
-.arch-right {}
 .arch-stat-block { background: var(--bg-card); border: 1px solid var(--border); padding: 32px; margin-bottom: 20px; border-radius: 8px; }
 .arch-stat-value { font-family: var(--mono); font-size: 36px; font-weight: 600; color: var(--green); line-height: 1; margin-bottom: 8px; }
 .arch-stat-label { font-size: 13px; color: var(--text-dim); line-height: 1.6; }
 .arch-stat-label strong { color: var(--text); font-weight: 600; }
 .arch-note { font-family: var(--mono); font-size: 11px; color: var(--text-muted); line-height: 1.6; letter-spacing: 0.04em; border-left: 2px solid var(--border-light); padding-left: 16px; }
 
-/* ── ADHD section ── */
-.adhd { border-top: 1px solid var(--border); }
-.adhd-intro { max-width: 580px; margin-bottom: 56px; }
-.adhd-intro p { font-size: 15px; color: var(--text-dim); line-height: 1.75; margin-top: 16px; }
-.adhd-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
-.adhd-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 36px 32px; transition: border-color 0.25s; }
-.adhd-card:hover { border-color: var(--border-light); }
-.adhd-card-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 16px; display: inline-block; padding: 3px 10px; border-radius: 4px; }
-.adhd-card h3 { font-size: 17px; font-weight: 600; letter-spacing: -0.01em; margin-bottom: 10px; color: var(--text); }
-.adhd-card p { font-size: 13px; color: var(--text-dim); line-height: 1.75; }
-.adhd-card ul { list-style: none; margin-top: 14px; }
-.adhd-card li { font-size: 13px; color: var(--text-dim); line-height: 1.7; padding: 4px 0; padding-left: 20px; position: relative; }
-.adhd-card li::before { content: ''; position: absolute; left: 0; top: 12px; width: 6px; height: 6px; border-radius: 50%; }
-.label-ships { color: var(--green); background: var(--green-surface); }
-.label-builds { color: var(--accent); background: var(--accent-surface); }
-.label-monitor { color: var(--amber); background: var(--amber-surface); }
-.label-focus { color: var(--purple); background: var(--purple-surface); }
-.adhd-card.card-ships li::before { background: var(--green); }
-.adhd-card.card-builds li::before { background: var(--accent); }
-.adhd-card.card-monitor li::before { background: var(--amber); }
-.adhd-card.card-focus li::before { background: var(--purple); }
-
-/* ── Commands & Skills ── */
+/* ── Commands ── */
 .commands { border-top: 1px solid var(--border); }
 .cmd-groups { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; margin-top: 56px; }
-.cmd-group {}
 .cmd-group-title { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
-.cmd-list { display: flex; flex-direction: column; gap: 0; }
+.cmd-list { display: flex; flex-direction: column; }
 .cmd-item { display: flex; align-items: baseline; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--border); }
 .cmd-item:last-child { border-bottom: none; }
 .cmd-name { font-family: var(--mono); font-size: 13px; font-weight: 600; color: var(--accent); min-width: 120px; flex-shrink: 0; }
 .cmd-desc { font-size: 13px; color: var(--text-dim); line-height: 1.6; }
 .cmd-note { font-family: var(--mono); font-size: 11px; color: var(--text-muted); line-height: 1.6; letter-spacing: 0.04em; margin-top: 48px; border-left: 2px solid var(--border-light); padding-left: 16px; max-width: 520px; }
 
-/* ── Integrations ── */
+/* ── Integrations (first card spans 2 cols) ── */
 .integrations { border-top: 1px solid var(--border); }
 .integration-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); margin-top: 56px; border-radius: 8px; overflow: hidden; }
 .integration-card { background: var(--bg-card); padding: 36px 32px; transition: background 0.25s; }
 .integration-card:hover { background: var(--bg-elevated); }
+.integration-card:first-child { grid-column: span 2; }
 .integration-card-name { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
 .integration-card-type { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 14px; }
 .integration-card p { font-size: 13px; color: var(--text-dim); line-height: 1.7; }
 .integration-card .ready { font-family: var(--mono); font-size: 11px; color: var(--green); margin-top: 12px; display: inline-block; }
-
-/* ── Core benefits (smaller grid) ── */
-.benefits { border-top: 1px solid var(--border); }
-.benefits-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); }
-.benefit-card { background: var(--bg); padding: 36px 32px; transition: background 0.25s; }
-.benefit-card:hover { background: var(--bg-card); }
-.benefit-card h3 { font-size: 15px; font-weight: 600; letter-spacing: -0.01em; margin-bottom: 8px; color: var(--text); }
-.benefit-card p { font-size: 13px; color: var(--text-dim); line-height: 1.7; }
 
 /* ── What it's not ── */
 .not { border-top: 1px solid var(--border); }
@@ -220,9 +214,12 @@ section { padding: 112px 0; }
 .not-item h3 { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
 .not-item p { font-size: 13px; color: var(--text-dim); line-height: 1.65; }
 
-/* ── Quickstart ── */
-.quickstart { border-top: 1px solid var(--border); }
-.terminal { background: var(--bg-code); border: 1px solid #333; margin-top: 48px; overflow: hidden; border-radius: 10px; }
+/* ── Quickstart (full-bleed dark — rhythm break) ── */
+.quickstart { border-top: 1px solid var(--border); background: var(--bg-code); padding: 80px 0; }
+.quickstart .section-label { color: rgba(79,142,247,0.8); }
+.quickstart .section-title { color: #e2ddd8; }
+.quickstart .section-desc { color: #888; }
+.terminal { border: 1px solid #333; margin-top: 48px; overflow: hidden; border-radius: 10px; }
 .terminal-bar { background: #2a2a2a; border-bottom: 1px solid #333; padding: 12px 16px; display: flex; align-items: center; gap: 8px; }
 .terminal-dot { width: 11px; height: 11px; border-radius: 50%; }
 .terminal-dot:nth-child(1) { background: #ff5f57; }
@@ -240,43 +237,44 @@ section { padding: 112px 0; }
 footer { border-top: 1px solid var(--border); padding: 48px 0; }
 footer .container { display: flex; justify-content: space-between; align-items: center; gap: 24px; }
 .footer-left { font-size: 13px; color: var(--text-muted); line-height: 1.7; }
+.footer-left a { color: var(--text-dim); text-decoration: none; transition: color 0.2s; }
+.footer-left a:hover { color: var(--accent); }
 .footer-left em { font-style: italic; color: var(--text-dim); }
 .footer-right { display: flex; gap: 20px; align-items: center; flex-shrink: 0; }
 .footer-right a { font-family: var(--mono); font-size: 12px; color: var(--text-dim); text-decoration: none; letter-spacing: 0.06em; transition: color 0.2s; }
 .footer-right a:hover { color: var(--accent); }
 
-/* ── Animations ── */
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(18px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
+@keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
 .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.65s ease, transform 0.65s ease; }
 .reveal.visible { opacity: 1; transform: translateY(0); }
 .reveal-delay-1 { transition-delay: 0.1s; }
 .reveal-delay-2 { transition-delay: 0.2s; }
 .reveal-delay-3 { transition-delay: 0.3s; }
 
-/* ── Responsive ── */
 @media (max-width: 768px) {
+  :root { --section-gap: 80px; }
   .container { padding: 0 20px; }
-  section { padding: 80px 0; }
   .nav-links a:not(.nav-gh) { display: none; }
+  .nav-toggle { display: block; }
+  .nav-links.mobile-open { display: flex; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: rgba(250,250,249,0.97); backdrop-filter: blur(24px); padding: 20px 32px; border-bottom: 1px solid var(--border); gap: 16px; }
+  .nav-links.mobile-open a { display: block !important; font-size: 15px; padding: 8px 0; }
   .hero h1 { font-size: clamp(32px, 10vw, 52px); }
   .hero-sub { font-size: 15px; }
   .hero-ctas { flex-direction: column; align-items: flex-start; }
   .problem-grid { grid-template-columns: 1fr; }
   .problem-card { padding: 32px 24px; }
   .step { grid-template-columns: 40px 1fr; gap: 20px; }
-  .step:hover { margin: 0 -20px; padding: 44px 20px; }
   .philosophy-layout { grid-template-columns: 1fr; gap: 40px; }
+  .layer-diagram { position: static; }
   .arch-layout { grid-template-columns: 1fr; gap: 32px; }
   .arch-layer-desc { display: none; }
   .adhd-grid { grid-template-columns: 1fr; }
   .cmd-groups { grid-template-columns: 1fr; gap: 40px; }
   .integration-grid { grid-template-columns: 1fr; }
-  .benefits-grid { grid-template-columns: 1fr; }
+  .integration-card:first-child { grid-column: auto; }
   .not-grid { grid-template-columns: 1fr; }
   .not-item { padding: 28px 24px; }
+  .quickstart { padding: 60px 0; }
   .terminal-body { padding: 20px; }
   .terminal-line { font-size: 12px; }
   footer .container { flex-direction: column; align-items: flex-start; }
@@ -285,21 +283,25 @@ footer .container { display: flex; justify-content: space-between; align-items: 
 </head>
 <body>
 
-<!-- Navigation -->
-<nav id="nav">
+<a href="#main" class="skip-nav">Skip to content</a>
+<div class="scroll-progress" id="scrollProgress" role="presentation"></div>
+
+<nav id="nav" role="navigation" aria-label="Main navigation">
   <div class="container">
     <a href="#" class="nav-logo"><span class="logo-accent">fonte</span>os</a>
+    <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
     <div class="nav-links">
-      <a href="#how">How it works</a>
-      <a href="#benefits">Benefits</a>
-      <a href="#commands">Commands</a>
-      <a href="#integrations">Integrations</a>
+      <a href="#how" data-section="how">How it works</a>
+      <a href="#adhd" data-section="adhd">Guardrails</a>
+      <a href="#commands" data-section="commands">Commands</a>
+      <a href="#integrations" data-section="integrations">Integrations</a>
       <a href="https://github.com/luke-toledo/fonteOS" target="_blank" rel="noopener" class="nav-gh">GitHub</a>
     </div>
   </div>
 </nav>
 
-<!-- Hero -->
 <section class="hero" id="home">
   <div class="container">
     <div class="hero-eyebrow">For Claude Code + Obsidian</div>
@@ -313,7 +315,8 @@ footer .container { display: flex; justify-content: space-between; align-items: 
   </div>
 </section>
 
-<!-- Problem -->
+<main id="main">
+
 <section class="problem" id="problem">
   <div class="container">
     <div class="section-label reveal">The problem</div>
@@ -328,18 +331,17 @@ footer .container { display: flex; justify-content: space-between; align-items: 
       <div class="problem-card reveal reveal-delay-2">
         <div class="problem-number">02</div>
         <h3>"My projects bleed into each other."</h3>
-        <p>No isolation means Claude mixes your ventures, clients, and products. A question about one project pulls in noise from another. Signal degrades fast.</p>
+        <p>No isolation means Claude mixes your ventures, clients, and products. Signal degrades fast.</p>
       </div>
       <div class="problem-card reveal reveal-delay-3">
         <div class="problem-number">03</div>
         <h3>"Claude goes off the rails without guardrails."</h3>
-        <p>Without behavioral rules, Claude guesses scope, expands tasks unprompted, and burns context on things you didn't ask for. You need structure, not hope.</p>
+        <p>Without behavioral rules, Claude guesses scope, expands tasks unprompted, and burns context on things you didn't ask for.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- How it works -->
 <section class="how" id="how">
   <div class="container">
     <div class="section-label reveal">How it works</div>
@@ -374,80 +376,6 @@ footer .container { display: flex; justify-content: space-between; align-items: 
   </div>
 </section>
 
-<!-- Philosophy: Grows with you -->
-<section class="philosophy" id="philosophy">
-  <div class="container">
-    <div class="section-label reveal">Philosophy</div>
-    <h2 class="section-title reveal">Not a new system to learn.<br>A structure that grows with you.</h2>
-    <p class="section-desc reveal">FonteOS is unopinionated by design. No methodology to adopt, no process to follow. Just a clear structure that separates thinking from doing.</p>
-    <div class="philosophy-layout reveal">
-      <div class="philosophy-text">
-        <h3>Two layers, one system</h3>
-        <p>Everything splits into <strong>strategy</strong> (vision, priorities, knowledge) and <strong>execution</strong> (tasks, issues, status). The vault holds strategy. Your task manager holds execution. They stay in sync through /start and /end — no double entry, no drift.</p>
-
-        <h3>Vision &rarr; Project &rarr; Task</h3>
-        <p>Your north star lives in core.md. Projects (springs) break it into workable domains. Tasks live in your task manager. Claude navigates this hierarchy automatically — loading only what's relevant to the current project, not everything you've ever written.</p>
-
-        <h3>Start small, add as you go</h3>
-        <p>Day one: a core.md and one spring. That's it. Add streams when a project gets complex. Add intelligence files when research recurs. Add agents when you need specialization. The system earns its complexity — you never have to design it upfront.</p>
-
-        <h3>Easy to maintain</h3>
-        <p>Everything is plain markdown. No databases, no config files, no lock-in. If you can read a file, you can understand the system. If you can edit a file, you can change it. Monthly /audit catches orphans and drift. Weekly maintenance takes minutes.</p>
-      </div>
-      <div>
-        <div class="layer-diagram">
-          <div class="layer-block layer-strategy">
-            <div class="layer-label">Strategy layer — the vault</div>
-            <div class="layer-name">Where you think</div>
-            <div class="layer-desc">Mission, priorities, project context, research, decisions, knowledge. Persistent across sessions. Claude reads this to understand your world.</div>
-          </div>
-          <div class="layer-items">
-            <div class="layer-item">
-              <span class="layer-item-name">Source</span>
-              <span class="layer-item-desc">core.md</span>
-            </div>
-            <div class="layer-item">
-              <span class="layer-item-name">Springs</span>
-              <span class="layer-item-desc">projects</span>
-            </div>
-            <div class="layer-item">
-              <span class="layer-item-name">Streams</span>
-              <span class="layer-item-desc">workstreams</span>
-            </div>
-            <div class="layer-item">
-              <span class="layer-item-name">Intelligence</span>
-              <span class="layer-item-desc">research</span>
-            </div>
-          </div>
-
-          <div class="layer-divider"><span>syncs via /start &amp; /end</span></div>
-
-          <div class="layer-block layer-execution">
-            <div class="layer-label">Execution layer — your task manager</div>
-            <div class="layer-name">Where you do</div>
-            <div class="layer-desc">Issues, sprints, statuses, assignments. Linear, Asana, or none — FonteOS adapts. Claude reads and proposes updates, you approve.</div>
-          </div>
-          <div class="layer-items">
-            <div class="layer-item">
-              <span class="layer-item-name">Projects</span>
-              <span class="layer-item-desc">mapped to springs</span>
-            </div>
-            <div class="layer-item">
-              <span class="layer-item-name">Issues</span>
-              <span class="layer-item-desc">tasks &amp; subtasks</span>
-            </div>
-            <div class="layer-item">
-              <span class="layer-item-name">Labels</span>
-              <span class="layer-item-desc">agent workflow</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ADHD Guardrails -->
 <section class="adhd" id="adhd">
   <div class="container">
     <div class="section-label reveal">Built for ADHD brains</div>
@@ -456,7 +384,6 @@ footer .container { display: flex; justify-content: space-between; align-items: 
       <p>Solo founders with ADHD know the pattern: you start a task, discover an interesting adjacent problem, and two hours later you've built infrastructure for something you haven't shipped yet. FonteOS encodes the counter-patterns directly into how Claude operates.</p>
     </div>
     <div class="adhd-grid">
-
       <div class="adhd-card card-ships reveal">
         <span class="adhd-card-label label-ships">Output typing</span>
         <h3>Ships vs. Builds vs. Learns</h3>
@@ -467,7 +394,6 @@ footer .container { display: flex; justify-content: space-between; align-items: 
           <li>Weekly ship streak tracked — consecutive weeks with 1+ ship</li>
         </ul>
       </div>
-
       <div class="adhd-card card-monitor reveal">
         <span class="adhd-card-label label-monitor">Always-on</span>
         <h3>Pattern monitoring</h3>
@@ -480,7 +406,6 @@ footer .container { display: flex; justify-content: space-between; align-items: 
           <li>Conditional commitment — "I'll do X once Y is perfect"</li>
         </ul>
       </div>
-
       <div class="adhd-card card-focus reveal">
         <span class="adhd-card-label label-focus">Session protocol</span>
         <h3>Session deliverables</h3>
@@ -492,7 +417,6 @@ footer .container { display: flex; justify-content: space-between; align-items: 
           <li><strong>First 15-minute action</strong> — smallest possible on-ramp to start</li>
         </ul>
       </div>
-
       <div class="adhd-card card-builds reveal">
         <span class="adhd-card-label label-builds">Drift protection</span>
         <h3>Nudges and interventions</h3>
@@ -504,12 +428,81 @@ footer .container { display: flex; justify-content: space-between; align-items: 
           <li>/end comparison — declared deliverable vs. actual output, every session</li>
         </ul>
       </div>
-
     </div>
   </div>
 </section>
 
-<!-- Commands & Skills -->
+<section class="philosophy" id="philosophy">
+  <div class="container">
+    <div class="section-label reveal">Philosophy</div>
+    <h2 class="section-title reveal">Not a new system to learn.<br>A structure that grows with you.</h2>
+    <p class="section-desc reveal">FonteOS is unopinionated by design. No methodology to adopt, no process to follow. Just a clear structure that separates thinking from doing.</p>
+    <div class="philosophy-layout reveal">
+      <div class="philosophy-text">
+        <h3>Two layers, one system</h3>
+        <p>Everything splits into <strong>strategy</strong> (vision, priorities, knowledge) and <strong>execution</strong> (tasks, issues, status). The vault holds strategy. Your task manager holds execution. They stay in sync through /start and /end — no double entry, no drift.</p>
+        <h3>Vision &rarr; Project &rarr; Task</h3>
+        <p>Your north star lives in core.md. Projects (springs) break it into workable domains. Tasks live in your task manager. Claude navigates this hierarchy automatically — loading only what's relevant.</p>
+        <h3>Start small, add as you go</h3>
+        <p>Day one: a core.md and one spring. That's it. Add streams when a project gets complex. Add intelligence files when research recurs. Add agents when you need specialization. The system earns its complexity.</p>
+        <h3>Easy to maintain</h3>
+        <p>Everything is plain markdown. No databases, no config files, no lock-in. Monthly /audit catches orphans and drift. Weekly maintenance takes minutes.</p>
+      </div>
+      <div>
+        <div class="layer-diagram">
+          <div class="layer-block layer-strategy">
+            <div class="layer-label">Strategy layer — the vault</div>
+            <div class="layer-name">Where you think</div>
+            <div class="layer-desc">Mission, priorities, project context, research, decisions, knowledge. Persistent across sessions.</div>
+          </div>
+          <div class="layer-items">
+            <div class="layer-item"><span class="layer-item-name">Source</span><span class="layer-item-desc">core.md</span></div>
+            <div class="layer-item"><span class="layer-item-name">Springs</span><span class="layer-item-desc">projects</span></div>
+            <div class="layer-item"><span class="layer-item-name">Streams</span><span class="layer-item-desc">workstreams</span></div>
+            <div class="layer-item"><span class="layer-item-name">Intelligence</span><span class="layer-item-desc">research</span></div>
+          </div>
+          <div class="layer-divider"><span>syncs via /start &amp; /end</span></div>
+          <div class="layer-block layer-execution">
+            <div class="layer-label">Execution layer — your task manager</div>
+            <div class="layer-name">Where you do</div>
+            <div class="layer-desc">Issues, sprints, statuses, assignments. Linear, Asana, or none — FonteOS adapts.</div>
+          </div>
+          <div class="layer-items">
+            <div class="layer-item"><span class="layer-item-name">Projects</span><span class="layer-item-desc">mapped to springs</span></div>
+            <div class="layer-item"><span class="layer-item-name">Issues</span><span class="layer-item-desc">tasks &amp; subtasks</span></div>
+            <div class="layer-item"><span class="layer-item-name">Labels</span><span class="layer-item-desc">agent workflow</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="arch" id="arch">
+  <div class="container">
+    <div class="section-label reveal">Architecture</div>
+    <h2 class="section-title reveal">Six layers. Five thousand tokens.<br>Ninety percent free.</h2>
+    <p class="section-desc reveal">The vault hierarchy tells Claude exactly what to load — and what to skip.</p>
+    <div class="arch-layout reveal">
+      <div class="arch-layers">
+        <div class="arch-layer"><span class="arch-layer-tag">Source</span><span class="arch-layer-name">core.md</span><span class="arch-layer-desc">mission + priorities</span></div>
+        <div class="arch-layer"><span class="arch-layer-tag">Springs</span><span class="arch-layer-name">Project indexes</span><span class="arch-layer-desc">one per venture</span></div>
+        <div class="arch-layer"><span class="arch-layer-tag">Streams</span><span class="arch-layer-name">Active workstreams</span><span class="arch-layer-desc">daily work</span></div>
+        <div class="arch-layer"><span class="arch-layer-tag">Intel</span><span class="arch-layer-name">Research &amp; reference</span><span class="arch-layer-desc">graduated</span></div>
+        <div class="arch-layer"><span class="arch-layer-tag">Agents</span><span class="arch-layer-name">AI role definitions</span><span class="arch-layer-desc">specialized</span></div>
+        <div class="arch-layer"><span class="arch-layer-tag">Inbox</span><span class="arch-layer-name">Loose ideas</span><span class="arch-layer-desc">triage weekly</span></div>
+      </div>
+      <div class="arch-right">
+        <div class="arch-stat-block">
+          <div class="arch-stat-value">~5k</div>
+          <div class="arch-stat-label"><strong>tokens loaded per session.</strong> The vault structure means Claude loads your context — not your entire life. MCP integrations fetch external data on demand.</div>
+        </div>
+        <div class="arch-note">No vectors. No embeddings. No similarity search. Just markdown files loaded strategically through a hierarchy Claude knows how to navigate.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="commands" id="commands">
   <div class="container">
     <div class="section-label reveal">Commands &amp; skills</div>
@@ -519,238 +512,76 @@ footer .container { display: flex; justify-content: space-between; align-items: 
       <div class="cmd-group">
         <div class="cmd-group-title">Session commands</div>
         <div class="cmd-list">
-          <div class="cmd-item">
-            <span class="cmd-name">/start</span>
-            <span class="cmd-desc">Load context, read session state, pull task manager issues, scope to a project, suggest work.</span>
-          </div>
-          <div class="cmd-item">
-            <span class="cmd-name">/end</span>
-            <span class="cmd-desc">Save session state — decisions, work done, blockers, next priorities. Compare deliverable vs. actual output.</span>
-          </div>
-          <div class="cmd-item">
-            <span class="cmd-name">/cycle</span>
-            <span class="cmd-desc">Automated daily scan. Classify issues, execute approved work, write a daily report. Runs on a schedule or manually.</span>
-          </div>
-          <div class="cmd-item">
-            <span class="cmd-name">/audit</span>
-            <span class="cmd-desc">Monthly vault health check. Broken links, orphaned notes, stale references, pattern health. Flags everything, fixes nothing without your approval.</span>
-          </div>
-          <div class="cmd-item">
-            <span class="cmd-name">/patterns</span>
-            <span class="cmd-desc">Run a pattern-breaking self-audit. Check ships ratio, scope creep, prerequisite chains. Manual trigger for the always-on system.</span>
-          </div>
-          <div class="cmd-item">
-            <span class="cmd-name">/review</span>
-            <span class="cmd-desc">Two-stage code and content review. Fast gap analysis, then deep counter-review. Catches what a single pass misses.</span>
-          </div>
+          <div class="cmd-item"><span class="cmd-name">/start</span><span class="cmd-desc">Load context, read session state, pull task manager issues, scope to a project, suggest work.</span></div>
+          <div class="cmd-item"><span class="cmd-name">/end</span><span class="cmd-desc">Save session state — decisions, work done, blockers, next priorities. Compare deliverable vs. actual output.</span></div>
+          <div class="cmd-item"><span class="cmd-name">/cycle</span><span class="cmd-desc">Automated daily scan. Classify issues, execute approved work, write a daily report.</span></div>
+          <div class="cmd-item"><span class="cmd-name">/audit</span><span class="cmd-desc">Monthly vault health check. Broken links, orphaned notes, pattern health. Flags everything, fixes nothing without approval.</span></div>
+          <div class="cmd-item"><span class="cmd-name">/patterns</span><span class="cmd-desc">Pattern-breaking self-audit. Ship ratio, scope creep, prerequisite chains.</span></div>
+          <div class="cmd-item"><span class="cmd-name">/review</span><span class="cmd-desc">Two-stage review. Fast gap analysis, then deep counter-review.</span></div>
         </div>
       </div>
       <div class="cmd-group">
         <div class="cmd-group-title">Skills &amp; modes</div>
         <div class="cmd-list">
-          <div class="cmd-item">
-            <span class="cmd-name">/perplexity</span>
-            <span class="cmd-desc">Deep research mode via Perplexity. Reddit mining, market research, competitive analysis. Cost-gated — asks before calling.</span>
-          </div>
-          <div class="cmd-item">
-            <span class="cmd-name">/youtube</span>
-            <span class="cmd-desc">Analyze YouTube videos via Gemini. Extract key points, summarize, pull quotes. For research without watching the full video.</span>
-          </div>
-          <div class="cmd-item">
-            <span class="cmd-name">/story-edit</span>
-            <span class="cmd-desc">Craft, review, or restructure stories, scripts, and founder content. Voice-aware — loads your writing profile automatically.</span>
-          </div>
-          <div class="cmd-item">
-            <span class="cmd-name">/humanize</span>
-            <span class="cmd-desc">Rewrite AI-generated text to sound like a real human wrote it. Detects and removes 25+ AI writing patterns.</span>
-          </div>
-          <div class="cmd-item">
-            <span class="cmd-name">/note</span>
-            <span class="cmd-desc">Create a new note in the vault with proper frontmatter, wikilinks, and placement. Quick capture without breaking flow.</span>
-          </div>
-          <div class="cmd-item">
-            <span class="cmd-name">/d-*</span>
-            <span class="cmd-desc">21 design skills — polish, critique, animate, audit, typeset, and more. Extensible library of design-focused prompts.</span>
-          </div>
+          <div class="cmd-item"><span class="cmd-name">/perplexity</span><span class="cmd-desc">Deep research via Perplexity. Reddit mining, market research, competitive analysis. Cost-gated.</span></div>
+          <div class="cmd-item"><span class="cmd-name">/youtube</span><span class="cmd-desc">Analyze YouTube videos via Gemini. Key points, summaries, quotes.</span></div>
+          <div class="cmd-item"><span class="cmd-name">/story-edit</span><span class="cmd-desc">Craft, review, or restructure stories, scripts, and founder content. Voice-aware.</span></div>
+          <div class="cmd-item"><span class="cmd-name">/humanize</span><span class="cmd-desc">Rewrite AI-generated text to sound human. Detects 25+ AI patterns.</span></div>
+          <div class="cmd-item"><span class="cmd-name">/note</span><span class="cmd-desc">Create a new vault note with frontmatter, wikilinks, and correct placement.</span></div>
+          <div class="cmd-item"><span class="cmd-name">/d-*</span><span class="cmd-desc">21 design skills — polish, critique, animate, audit, typeset, and more.</span></div>
         </div>
       </div>
     </div>
-    <div class="cmd-note reveal">
-      Commands ship with the vault (.claude/commands/) and work immediately. Skills live globally (~/.claude/skills/) and need separate installation. Both are markdown files — read them, modify them, or write your own.
-    </div>
+    <div class="cmd-note reveal">Commands ship with the vault (.claude/commands/) and work immediately. Skills live globally (~/.claude/skills/) and need separate installation. Both are markdown files — read them, modify them, or write your own.</div>
   </div>
 </section>
 
-<!-- Integrations -->
 <section class="integrations" id="integrations">
   <div class="container">
     <div class="section-label reveal">Integrations</div>
     <h2 class="section-title reveal">Plug in what you need.<br>Skip what you don't.</h2>
-    <p class="section-desc reveal">FonteOS works standalone with just markdown. Each integration adds a capability — none are required. Connect them through MCP or webhooks.</p>
+    <p class="section-desc reveal">FonteOS works standalone with just markdown. Each integration adds a capability — none are required.</p>
     <div class="integration-grid reveal">
-      <div class="integration-card">
-        <div class="integration-card-name">Linear</div>
-        <div class="integration-card-type">Task management</div>
-        <p>Two-way sync. Claude reads Todo issues, moves to In Progress on pickup, posts structured comments, proposes status changes. Projects map 1:1 to springs.</p>
-        <span class="ready">&check; MCP ready</span>
-      </div>
-      <div class="integration-card">
-        <div class="integration-card-name">Asana</div>
-        <div class="integration-card-type">Task management</div>
-        <p>Same workflow, different tool. First-run setup asks which task manager you use — or none. The vault structure works either way.</p>
-        <span class="ready">&check; MCP ready</span>
-      </div>
-      <div class="integration-card">
-        <div class="integration-card-name">Google Drive</div>
-        <div class="integration-card-type">Document access</div>
-        <p>Read Sheets and Docs directly into Claude's context. Pull spreadsheet data, shared research, and reference material without copy-paste.</p>
-        <span class="ready">&check; MCP ready</span>
-      </div>
-      <div class="integration-card">
-        <div class="integration-card-name">Perplexity</div>
-        <div class="integration-card-type">Deep research</div>
-        <p>Reddit mining, market research, competitive analysis. Cost-gated — Claude asks before calling paid APIs. Results flow into intelligence files.</p>
-        <span class="ready">&check; MCP ready</span>
-      </div>
-      <div class="integration-card">
-        <div class="integration-card-name">Gemini</div>
-        <div class="integration-card-type">Document &amp; video analysis</div>
-        <p>YouTube video extraction, PDF analysis, vision tasks. Each routed to the right use case. Summarize a 2-hour video in 30 seconds.</p>
-        <span class="ready">&check; MCP ready</span>
-      </div>
-      <div class="integration-card">
-        <div class="integration-card-name">Google Calendar</div>
-        <div class="integration-card-type">Scheduling</div>
-        <p>Check availability, create events, find meeting times. Claude can schedule a review session or set a deadline reminder without leaving the terminal.</p>
-        <span class="ready">&check; MCP ready</span>
-      </div>
-      <div class="integration-card">
-        <div class="integration-card-name">Figma</div>
-        <div class="integration-card-type">Design</div>
-        <p>Read designs, extract components, generate code from Figma files. Bridge the gap between design and implementation without switching tools.</p>
-        <span class="ready">&check; MCP ready</span>
-      </div>
-      <div class="integration-card">
-        <div class="integration-card-name">GitHub</div>
-        <div class="integration-card-type">Code &amp; version control</div>
-        <p>The vault itself is a git repo. Push, pull, branch, PR — all from the terminal. Version control for your strategy, not just your code.</p>
-        <span class="ready">&check; Native</span>
-      </div>
-      <div class="integration-card">
-        <div class="integration-card-name">Your own</div>
-        <div class="integration-card-type">Extensible</div>
-        <p>Any MCP server works. Notion, Slack, Airtable, custom APIs — if there's an MCP server for it, FonteOS can use it. No code changes needed.</p>
-        <span class="ready">&check; MCP compatible</span>
-      </div>
+      <div class="integration-card"><div class="integration-card-name">Linear</div><div class="integration-card-type">Task management</div><p>Two-way sync. Claude reads Todo issues, moves to In Progress on pickup, posts structured comments, proposes status changes. Projects map 1:1 to springs.</p><span class="ready">&check; MCP ready</span></div>
+      <div class="integration-card"><div class="integration-card-name">Asana</div><div class="integration-card-type">Task management</div><p>Same workflow, different tool. First-run setup asks which task manager you use — or none.</p><span class="ready">&check; MCP ready</span></div>
+      <div class="integration-card"><div class="integration-card-name">Perplexity</div><div class="integration-card-type">Deep research</div><p>Reddit mining, market research, competitive analysis. Cost-gated.</p><span class="ready">&check; MCP ready</span></div>
+      <div class="integration-card"><div class="integration-card-name">Gemini</div><div class="integration-card-type">Document &amp; video</div><p>YouTube extraction, PDF analysis, vision tasks.</p><span class="ready">&check; MCP ready</span></div>
+      <div class="integration-card"><div class="integration-card-name">Google Drive</div><div class="integration-card-type">Documents</div><p>Read Sheets and Docs directly into context.</p><span class="ready">&check; MCP ready</span></div>
+      <div class="integration-card"><div class="integration-card-name">Figma</div><div class="integration-card-type">Design</div><p>Read designs, extract components, generate code.</p><span class="ready">&check; MCP ready</span></div>
+      <div class="integration-card"><div class="integration-card-name">Calendar</div><div class="integration-card-type">Scheduling</div><p>Check availability, create events from the terminal.</p><span class="ready">&check; MCP ready</span></div>
+      <div class="integration-card"><div class="integration-card-name">GitHub</div><div class="integration-card-type">Version control</div><p>The vault is a git repo. Strategy under version control.</p><span class="ready">&check; Native</span></div>
+      <div class="integration-card"><div class="integration-card-name">Your own</div><div class="integration-card-type">Extensible</div><p>Any MCP server works. Notion, Slack, Airtable, custom APIs.</p><span class="ready">&check; MCP compatible</span></div>
     </div>
   </div>
 </section>
 
-<!-- Core Benefits (trimmed) -->
-<section class="benefits" id="benefits">
-  <div class="container">
-    <div class="section-label reveal">Core benefits</div>
-    <h2 class="section-title reveal">What makes it work.</h2>
-    <p class="section-desc reveal">The fundamentals underneath everything else.</p>
-    <div class="benefits-grid reveal">
-      <div class="benefit-card">
-        <h3>Persistent memory</h3>
-        <p>Session state saved at /end, restored at /start. Decisions, work done, blockers, next priorities — all carried forward. No more "let me catch you up."</p>
-      </div>
-      <div class="benefit-card">
-        <h3>Focused context loading</h3>
-        <p>A six-layer hierarchy tells Claude exactly what to load. ~5k tokens per session, not your entire vault. 90% of the window stays free for actual work.</p>
-      </div>
-      <div class="benefit-card">
-        <h3>Secure by default</h3>
-        <p>No npm. No dependencies. No build step. No server. No API keys to manage. It's markdown files in a folder. Nothing to audit, nothing to patch.</p>
-      </div>
-      <div class="benefit-card">
-        <h3>Behavioral guardrails</h3>
-        <p>Three-tier permission system: autonomous, propose-and-wait, never-allowed. Claude reads freely, proposes edits to important files, can't delete anything.</p>
-      </div>
-      <div class="benefit-card">
-        <h3>Specialized agents</h3>
-        <p>Define AI agents in markdown — model, role, tools, context. Researcher, content writer, SEO strategist, operations. Your workforce, scoped and reusable.</p>
-      </div>
-      <div class="benefit-card">
-        <h3>Automated instructions</h3>
-        <p>CLAUDE.md behavioral rules run every session. Pattern monitoring, permission tiers, scope limits — all encoded. Claude follows your system, not its defaults.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- What it's NOT -->
 <section class="not" id="not">
   <div class="container">
     <div class="section-label reveal">What it is not</div>
     <h2 class="section-title reveal">No hype. No dependencies.<br>No surprises.</h2>
     <div class="not-grid">
-      <div class="not-item reveal">
-        <span class="not-x">&times;</span>
-        <div>
-          <h3>Not a chatbot</h3>
-          <p>FonteOS is a working context for Claude Code — a structured environment, not a conversation interface. It assumes you're already in the terminal.</p>
-        </div>
-      </div>
-      <div class="not-item reveal">
-        <span class="not-x">&times;</span>
-        <div>
-          <h3>Not a RAG pipeline</h3>
-          <p>No vectors. No embeddings. No similarity search. Just markdown files loaded strategically through a hierarchy Claude knows how to navigate.</p>
-        </div>
-      </div>
-      <div class="not-item reveal">
-        <span class="not-x">&times;</span>
-        <div>
-          <h3>Not a SaaS</h3>
-          <p>No server, no account, no subscription. It lives in a folder on your machine. You own it entirely. Fork it, modify it, make it yours.</p>
-        </div>
-      </div>
-      <div class="not-item reveal">
-        <span class="not-x">&times;</span>
-        <div>
-          <h3>Not opinionated</h3>
-          <p>It gives you structure, not a religion. Use any task manager, any methodology, any cadence. The system adapts to how you work — not the other way around.</p>
-        </div>
-      </div>
+      <div class="not-item reveal"><span class="not-x">&times;</span><div><h3>Not a chatbot</h3><p>FonteOS is a working context for Claude Code — a structured environment, not a conversation interface.</p></div></div>
+      <div class="not-item reveal"><span class="not-x">&times;</span><div><h3>Not a RAG pipeline</h3><p>No vectors. No embeddings. Just markdown files loaded strategically through a hierarchy.</p></div></div>
+      <div class="not-item reveal"><span class="not-x">&times;</span><div><h3>Not a SaaS</h3><p>No server, no account, no subscription. It lives in a folder on your machine. You own it entirely.</p></div></div>
+      <div class="not-item reveal"><span class="not-x">&times;</span><div><h3>Not opinionated</h3><p>Use any task manager, any methodology, any cadence. The system adapts to how you work.</p></div></div>
     </div>
   </div>
 </section>
 
-<!-- Quickstart -->
 <section class="quickstart" id="quickstart">
   <div class="container">
     <div class="section-label reveal">Quickstart</div>
     <h2 class="section-title reveal">Four commands.<br>You're running.</h2>
-    <p class="section-desc reveal">First run walks you through setup. Every run after that loads your world in seconds.</p>
+    <p class="section-desc reveal">First run walks you through setup. Every run after loads your world in seconds.</p>
     <div class="terminal reveal">
-      <div class="terminal-bar">
-        <div class="terminal-dot"></div>
-        <div class="terminal-dot"></div>
-        <div class="terminal-dot"></div>
-        <span class="terminal-label">zsh</span>
-      </div>
+      <div class="terminal-bar"><div class="terminal-dot"></div><div class="terminal-dot"></div><div class="terminal-dot"></div><span class="terminal-label">zsh</span></div>
       <div class="terminal-body">
-        <div class="terminal-line">
-          <span class="terminal-prompt">$</span>
-          <span class="terminal-cmd">git clone https://github.com/luke-toledo/fonteOS.git my-vault</span>
-        </div>
+        <div class="terminal-line"><span class="terminal-prompt">$</span><span class="terminal-cmd">git clone https://github.com/luke-toledo/fonteOS.git my-vault</span></div>
         <div class="terminal-out">Cloning into 'my-vault'...</div>
-        <div class="terminal-line">
-          <span class="terminal-prompt">$</span>
-          <span class="terminal-cmd">cd my-vault</span>
-        </div>
-        <div class="terminal-line">
-          <span class="terminal-prompt">$</span>
-          <span class="terminal-cmd">claude</span>
-        </div>
+        <div class="terminal-line"><span class="terminal-prompt">$</span><span class="terminal-cmd">cd my-vault</span></div>
+        <div class="terminal-line"><span class="terminal-prompt">$</span><span class="terminal-cmd">claude</span></div>
         <div class="terminal-out">Claude Code ready.</div>
-        <div class="terminal-line">
-          <span class="terminal-prompt">&gt;</span>
-          <span class="terminal-slash">/start</span>
-        </div>
+        <div class="terminal-line"><span class="terminal-prompt">&gt;</span><span class="terminal-slash">/start</span></div>
         <div class="terminal-out">Reading core.md... Loading session state... Checking integrations...</div>
         <div class="terminal-out" style="color: #3ecf8e;">Context loaded. What are we working on?</div>
       </div>
@@ -758,13 +589,11 @@ footer .container { display: flex; justify-content: space-between; align-items: 
   </div>
 </section>
 
-<!-- Footer -->
+</main>
+
 <footer>
   <div class="container">
-    <div class="footer-left">
-      Built by Luke in Lisbon.<br>
-      <em>"Fonte" is Portuguese for spring — the source where streams begin.</em>
-    </div>
+    <div class="footer-left">Built by <a href="https://x.com/lukeSVG" target="_blank" rel="noopener">Luke</a> in Lisbon.<br><em>"Fonte" is Portuguese for spring — the source where streams begin.</em></div>
     <div class="footer-right">
       <a href="https://github.com/luke-toledo/fonteOS" target="_blank" rel="noopener">GitHub</a>
       <a href="https://github.com/luke-toledo/fonteOS/blob/main/docs/getting-started.md" target="_blank" rel="noopener">Docs</a>
@@ -773,21 +602,47 @@ footer .container { display: flex; justify-content: space-between; align-items: 
 </footer>
 
 <script>
+const scrollProgress = document.getElementById('scrollProgress');
+const navLinks = document.querySelectorAll('[data-section]');
+const sections = document.querySelectorAll('section[id]');
 const nav = document.getElementById('nav');
+
 window.addEventListener('scroll', () => {
-  nav.classList.toggle('scrolled', window.scrollY > 40);
+  const s = window.scrollY;
+  const h = document.documentElement.scrollHeight - window.innerHeight;
+  scrollProgress.style.width = (s / h * 100) + '%';
+  nav.classList.toggle('scrolled', s > 40);
 }, { passive: true });
 
-const reveals = document.querySelectorAll('.reveal');
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('visible');
-      observer.unobserve(entry.target);
+const sectionObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      navLinks.forEach(l => l.classList.remove('active'));
+      const a = document.querySelector(`[data-section="${e.target.id}"]`);
+      if (a) a.classList.add('active');
     }
   });
+}, { threshold: 0.15, rootMargin: '-80px 0px -50% 0px' });
+sections.forEach(s => sectionObs.observe(s));
+
+const reveals = document.querySelectorAll('.reveal');
+const revealObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); revealObs.unobserve(e.target); } });
 }, { threshold: 0.12, rootMargin: '0px 0px -48px 0px' });
-reveals.forEach(el => observer.observe(el));
+reveals.forEach(el => revealObs.observe(el));
+
+const navToggle = document.querySelector('.nav-toggle');
+const navLinksEl = document.querySelector('.nav-links');
+navToggle.addEventListener('click', () => {
+  const open = navLinksEl.classList.toggle('mobile-open');
+  navToggle.classList.toggle('open');
+  navToggle.setAttribute('aria-expanded', open);
+});
+navLinksEl.querySelectorAll('a').forEach(l => l.addEventListener('click', () => {
+  navLinksEl.classList.remove('mobile-open');
+  navToggle.classList.remove('open');
+  navToggle.setAttribute('aria-expanded', 'false');
+}));
 </script>
 </body>
 </html>
