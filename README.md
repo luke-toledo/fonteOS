@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/hero-placeholder.svg" alt="FonteOS — Give Claude Code a brain it keeps between sessions" width="100%">
+  <!-- Hero image coming soon -->
 </p>
 
 <h1 align="center">FonteOS</h1>
