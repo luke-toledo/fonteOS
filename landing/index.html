@@ -111,8 +111,8 @@ section { padding: var(--section-gap) 0; }
 .problem-card { background: var(--bg); padding: 40px 36px; transition: background 0.25s; }
 .problem-card:hover { background: var(--bg-card); }
 .problem-number { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; color: var(--text-muted); margin-bottom: 20px; }
-.problem-card h3 { font-size: 17px; font-weight: 600; line-height: 1.4; letter-spacing: -0.01em; color: var(--text); margin-bottom: 12px; }
-.problem-card p { font-size: 13px; color: var(--text-dim); line-height: 1.7; }
+.problem-card h3 { font-size: 20px; font-weight: 600; line-height: 1.35; letter-spacing: -0.01em; color: var(--text); margin-bottom: 12px; }
+.problem-card p { font-size: 14px; color: var(--text-dim); line-height: 1.7; }
 
 /* ── How it works ── */
 .how { border-top: 1px solid var(--border); }
@@ -120,8 +120,8 @@ section { padding: var(--section-gap) 0; }
 .step { display: grid; grid-template-columns: 56px 1fr; gap: 36px; padding: 44px 0; border-bottom: 1px solid var(--border); align-items: start; }
 .step:last-child { border-bottom: none; }
 .step-num { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; color: var(--text-muted); padding-top: 4px; }
-.step-body h3 { font-size: 19px; font-weight: 600; letter-spacing: -0.015em; margin-bottom: 8px; color: var(--text); }
-.step-body p { font-size: 14px; color: var(--text-dim); line-height: 1.75; max-width: 500px; }
+.step-body h3 { font-size: 22px; font-weight: 600; letter-spacing: -0.015em; margin-bottom: 8px; color: var(--text); }
+.step-body p { font-size: 15px; color: var(--text-dim); line-height: 1.75; max-width: 540px; }
 .step-code { display: inline-block; font-family: var(--mono); font-size: 12px; color: var(--accent); background: var(--accent-surface); border: 1px solid rgba(37,99,235,0.12); padding: 3px 10px; margin-top: 12px; letter-spacing: 0.05em; border-radius: 4px; }
 
 /* ── ADHD (promoted, elevated bg for rhythm break) ── */
@@ -132,8 +132,8 @@ section { padding: var(--section-gap) 0; }
 .adhd-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 36px 32px; transition: border-color 0.25s, transform 0.25s; }
 .adhd-card:hover { border-color: var(--border-light); transform: translateY(-2px); }
 .adhd-card-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 16px; display: inline-block; padding: 3px 10px; border-radius: 4px; }
-.adhd-card h3 { font-size: 17px; font-weight: 600; letter-spacing: -0.01em; margin-bottom: 10px; color: var(--text); }
-.adhd-card p { font-size: 13px; color: var(--text-dim); line-height: 1.75; }
+.adhd-card h3 { font-size: 20px; font-weight: 600; letter-spacing: -0.01em; margin-bottom: 10px; color: var(--text); }
+.adhd-card p { font-size: 14px; color: var(--text-dim); line-height: 1.75; }
 .adhd-card ul { list-style: none; margin-top: 14px; }
 .adhd-card li { font-size: 13px; color: var(--text-dim); line-height: 1.7; padding: 4px 0; padding-left: 20px; position: relative; }
 .adhd-card li::before { content: ''; position: absolute; left: 0; top: 12px; width: 6px; height: 6px; border-radius: 50%; }
@@ -149,7 +149,7 @@ section { padding: var(--section-gap) 0; }
 /* ── Philosophy ── */
 .philosophy { border-top: 1px solid var(--border); }
 .philosophy-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
-.philosophy-text h3 { font-size: 19px; font-weight: 600; letter-spacing: -0.015em; margin-bottom: 12px; color: var(--text); margin-top: 36px; }
+.philosophy-text h3 { font-size: 22px; font-weight: 600; letter-spacing: -0.015em; margin-bottom: 12px; color: var(--text); margin-top: 36px; }
 .philosophy-text h3:first-child { margin-top: 0; }
 .philosophy-text p { font-size: 14px; color: var(--text-dim); line-height: 1.75; }
 .layer-diagram { display: flex; flex-direction: column; gap: 2px; position: sticky; top: 100px; }
@@ -201,7 +201,7 @@ section { padding: var(--section-gap) 0; }
 .integration-card { background: var(--bg-card); padding: 36px 32px; transition: background 0.25s; }
 .integration-card:hover { background: var(--bg-elevated); }
 .integration-card:first-child { grid-column: span 2; }
-.integration-card-name { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+.integration-card-name { font-size: 18px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
 .integration-card-type { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 14px; }
 .integration-card p { font-size: 13px; color: var(--text-dim); line-height: 1.7; }
 .integration-card .ready { font-family: var(--mono); font-size: 11px; color: var(--green); margin-top: 12px; display: inline-block; }
@@ -211,14 +211,14 @@ section { padding: var(--section-gap) 0; }
 .not-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--border); margin-top: 56px; }
 .not-item { background: var(--bg); padding: 32px 36px; display: flex; gap: 16px; align-items: start; }
 .not-x { font-family: var(--mono); font-size: 14px; color: var(--text-muted); padding-top: 2px; flex-shrink: 0; }
-.not-item h3 { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
-.not-item p { font-size: 13px; color: var(--text-dim); line-height: 1.65; }
+.not-item h3 { font-size: 17px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+.not-item p { font-size: 14px; color: var(--text-dim); line-height: 1.65; }
 
 /* ── Quickstart (full-bleed dark — rhythm break) ── */
-.quickstart { border-top: 1px solid var(--border); background: var(--bg-code); padding: 80px 0; }
-.quickstart .section-label { color: rgba(79,142,247,0.8); }
-.quickstart .section-title { color: #e2ddd8; }
-.quickstart .section-desc { color: #888; }
+.quickstart { border-top: 1px solid var(--border); background: #fef3c7; padding: 80px 0; }
+.quickstart .section-label { color: var(--amber); }
+.quickstart .section-title { color: var(--text); }
+.quickstart .section-desc { color: var(--text-dim); }
 .terminal { border: 1px solid #333; margin-top: 48px; overflow: hidden; border-radius: 10px; }
 .terminal-bar { background: #2a2a2a; border-bottom: 1px solid #333; padding: 12px 16px; display: flex; align-items: center; gap: 8px; }
 .terminal-dot { width: 11px; height: 11px; border-radius: 50%; }
@@ -288,7 +288,7 @@ footer .container { display: flex; justify-content: space-between; align-items: 
 
 <nav id="nav" role="navigation" aria-label="Main navigation">
   <div class="container">
-    <a href="#" class="nav-logo"><span class="logo-accent">fonte</span>os</a>
+    <a href="#" class="nav-logo"><span class="logo-accent">fonte</span>OS</a>
     <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
@@ -320,23 +320,23 @@ footer .container { display: flex; justify-content: space-between; align-items: 
 <section class="problem" id="problem">
   <div class="container">
     <div class="section-label reveal">The problem</div>
-    <h2 class="section-title reveal">You're wasting 10 minutes<br>every single session.</h2>
-    <p class="section-desc reveal">Every new conversation starts from scratch. You spend the first 10 minutes catching Claude up on stuff it already knew yesterday.</p>
+    <h2 class="section-title reveal">You're losing hours every week<br>re-explaining yourself to Claude.</h2>
+    <p class="section-desc reveal">10 minutes per session doesn't sound like much. Three sessions a day, five days a week — that's over 12 hours a month spent on context that should already be there. And that's before you count the decisions you've lost and the projects you can't find.</p>
     <div class="problem-grid">
       <div class="problem-card reveal reveal-delay-1">
         <div class="problem-number">01</div>
-        <h3>"I spend 10 minutes rebuilding context every session."</h3>
-        <p>Your mission, your projects, your priorities, your decisions — all gone. Every conversation starts cold. You're paying tokens to re-teach, not to work.</p>
+        <h3>"Where was I? What did we decide last time?"</h3>
+        <p>Every session starts cold. You re-explain your mission, your projects, your priorities. That decision from three sessions ago? Gone. The research Claude did yesterday? Gone. You're paying for the same context over and over.</p>
       </div>
       <div class="problem-card reveal reveal-delay-2">
         <div class="problem-number">02</div>
-        <h3>"My projects bleed into each other."</h3>
-        <p>Without isolation, Claude mixes up your ventures. You ask about one project and get context from another. It gets messy.</p>
+        <h3>"Claude keeps mixing up my projects."</h3>
+        <p>You ask about your SaaS and Claude pulls in context from your freelance client. Three ventures, one conversation, zero boundaries. Everything turns into soup.</p>
       </div>
       <div class="problem-card reveal reveal-delay-3">
         <div class="problem-number">03</div>
-        <h3>"Claude goes off the rails without guardrails."</h3>
-        <p>Without behavioral rules, Claude guesses scope, expands tasks unprompted, and burns context on things you didn't ask for.</p>
+        <h3>"I asked for a landing page and got a design system."</h3>
+        <p>Without rules, Claude expands scope, adds features you didn't ask for, and burns your whole context window on tangents. You wanted a button. It built a component library.</p>
       </div>
     </div>
   </div>
@@ -345,14 +345,14 @@ footer .container { display: flex; justify-content: space-between; align-items: 
 <section class="how" id="how">
   <div class="container">
     <div class="section-label reveal">How it works</div>
-    <h2 class="section-title reveal">Three steps to never<br>re-explain yourself again.</h2>
-    <p class="section-desc reveal">It's a folder of markdown files with rules Claude follows automatically. No magic. No install.</p>
+    <h2 class="section-title reveal">Three steps. No setup marathon.<br>You're productive in minutes.</h2>
+    <p class="section-desc reveal">It's a folder of markdown files. Clone it, run /start, and a built-in tutorial walks you through the rest. No config files to figure out. No weekend lost to setup.</p>
     <div class="steps">
       <div class="step reveal">
         <div class="step-num">01</div>
         <div class="step-body">
           <h3>Clone the repo</h3>
-          <p>Markdown files and a CLAUDE.md. That's it. Open the folder in Obsidian or any editor.</p>
+          <p>Markdown files and a CLAUDE.md. That's the whole thing. Open it in Obsidian or any text editor. Works on your laptop, works on a server — anywhere Claude Code runs.</p>
           <span class="step-code">git clone &rarr; open &rarr; done</span>
         </div>
       </div>
@@ -360,15 +360,15 @@ footer .container { display: flex; justify-content: space-between; align-items: 
         <div class="step-num">02</div>
         <div class="step-body">
           <h3>Run /start</h3>
-          <p>Claude reads your mission, projects, and where you left off. It picks a project, loads the right files, and asks what you want to work on. First time, it walks you through setup. After that, instant.</p>
+          <p>First time? Claude walks you through a quick tutorial — who you are, what you're building, your priorities. Takes about 5 minutes. Every session after that, /start loads your full context instantly and asks what you're working on today.</p>
           <span class="step-code">/start &rarr; context loaded &rarr; work begins</span>
         </div>
       </div>
       <div class="step reveal">
         <div class="step-num">03</div>
         <div class="step-body">
-          <h3>Work &rarr; /end &rarr; next session picks up cold</h3>
-          <p>At the end of each session, /end saves your state: decisions made, work done, what's next. The next session reads that state and starts where you left off. No recap needed.</p>
+          <h3>Work &rarr; /end &rarr; pick up exactly where you left off</h3>
+          <p>When you're done, /end saves everything — decisions, progress, blockers, what to do next. Tomorrow's session reads that and starts where you stopped. Built-in commands like /audit keep your vault tidy without you thinking about it.</p>
           <span class="step-code">/end &rarr; state saved &rarr; cold start eliminated</span>
         </div>
       </div>
@@ -379,9 +379,9 @@ footer .container { display: flex; justify-content: space-between; align-items: 
 <section class="adhd" id="adhd">
   <div class="container">
     <div class="section-label reveal">Built for ADHD brains</div>
-    <h2 class="section-title reveal">Stop building infrastructure.<br>Start shipping the thing.</h2>
+    <h2 class="section-title reveal">Your ADHD bought 12 domains<br>and shipped zero products.</h2>
     <div class="adhd-intro reveal">
-      <p>If you have ADHD, you know what happens. You sit down to write a landing page, notice the font stack is wrong, start researching typography, and two hours later you've built a design system for a product that doesn't exist yet. FonteOS makes Claude call you out when this is happening.</p>
+      <p>You know the pattern. You sit down to write copy, notice the font looks off, start researching typography, buy a domain for a type foundry, and two hours later you've got a Figma file for a business that will never exist. We all have a graveyard of half-built projects. FonteOS doesn't cure that — but it makes Claude call you out mid-spiral.</p>
     </div>
     <div class="adhd-grid">
       <div class="adhd-card card-ships reveal">
@@ -435,16 +435,16 @@ footer .container { display: flex; justify-content: space-between; align-items: 
 <section class="philosophy" id="philosophy">
   <div class="container">
     <div class="section-label reveal">Philosophy</div>
-    <h2 class="section-title reveal">Zero learning curve.<br>It's just a folder.</h2>
-    <p class="section-desc reveal">There's no methodology to learn. No process to adopt. Just a folder structure that keeps your thinking separate from your doing.</p>
+    <h2 class="section-title reveal">Start with one file.<br>Add complexity only when you need it.</h2>
+    <p class="section-desc reveal">No new methodology to learn. No hours of configuration. No philosophy you have to buy into. Day one is a single file and one project. You add structure when your work actually demands it — not because the tool requires it upfront.</p>
     <div class="philosophy-layout reveal">
       <div class="philosophy-text">
         <h3>Two layers, one system</h3>
         <p>Everything splits into <strong>strategy</strong> (vision, priorities, knowledge) and <strong>execution</strong> (tasks, issues, status). The vault holds strategy. Your task manager holds execution. They stay in sync through /start and /end — no double entry, no drift.</p>
         <h3>Vision &rarr; Project &rarr; Task</h3>
         <p>Your north star lives in core.md. Projects (springs) break it into workable domains. Tasks live in your task manager. Claude navigates this hierarchy automatically — loading only what's relevant.</p>
-        <h3>Start small, add as you go</h3>
-        <p>Day one you have a core.md and one project folder. That's it. You add complexity only when the work demands it, not because the system requires it upfront.</p>
+        <h3>Kickstart in 5 minutes, grow for years</h3>
+        <p>Day one you have a core.md and one project folder. Run /start and you're working. Weeks later you might have five projects, research files, and custom agents. You didn't plan that upfront — it grew because you needed it.</p>
         <h3>Easy to maintain</h3>
         <p>Everything is plain markdown. No databases, no config files, no lock-in. Monthly /audit catches orphans and drift. Weekly maintenance takes minutes.</p>
       </div>
@@ -481,8 +481,8 @@ footer .container { display: flex; justify-content: space-between; align-items: 
 <section class="arch" id="arch">
   <div class="container">
     <div class="section-label reveal">Architecture</div>
-    <h2 class="section-title reveal">Claude loads 5k tokens.<br>Not your entire life.</h2>
-    <p class="section-desc reveal">The vault hierarchy tells Claude exactly what to load — and what to skip.</p>
+    <h2 class="section-title reveal">It knows your project<br>better than you do.</h2>
+    <p class="section-desc reveal">Claude loads only the files relevant to what you're working on right now. Per-project context, not everything you've ever written. This keeps the context window tight — which means better output quality, not just faster loads.</p>
     <div class="arch-layout reveal">
       <div class="arch-layers">
         <div class="arch-layer"><span class="arch-layer-tag">Source</span><span class="arch-layer-name">core.md</span><span class="arch-layer-desc">mission + priorities</span></div>
@@ -495,9 +495,9 @@ footer .container { display: flex; justify-content: space-between; align-items: 
       <div class="arch-right">
         <div class="arch-stat-block">
           <div class="arch-stat-value">~5k</div>
-          <div class="arch-stat-label"><strong>tokens loaded per session.</strong> The vault structure means Claude loads your context — not your entire life. MCP integrations fetch external data on demand.</div>
+          <div class="arch-stat-label"><strong>tokens loaded per session.</strong> Claude knows exactly where everything is — your mission, your projects, your research. It doesn't rummage through your whole vault. It loads the right files for the right project. Less noise, better answers.</div>
         </div>
-        <div class="arch-note">No vectors. No embeddings. No similarity search. Just markdown files loaded strategically through a hierarchy Claude knows how to navigate.</div>
+        <div class="arch-note">No vectors, no embeddings, no database. Just a hierarchy of markdown files that Claude navigates automatically. You stop juggling context — it handles that.</div>
       </div>
     </div>
   </div>
@@ -506,8 +506,8 @@ footer .container { display: flex; justify-content: space-between; align-items: 
 <section class="commands" id="commands">
   <div class="container">
     <div class="section-label reveal">Commands &amp; skills</div>
-    <h2 class="section-title reveal">The stuff you do every session,<br>automated into slash commands.</h2>
-    <p class="section-desc reveal">Slash commands handle the recurring patterns. Skills handle the specialized tasks. Both are just markdown files you can read, modify, or extend.</p>
+    <h2 class="section-title reveal">Type a command. Or let<br>the system call it for you.</h2>
+    <p class="section-desc reveal">Commands automate the stuff you'd do every session anyway. Skills handle specialized work — and the system knows when to use them. You can also summon anything manually with a slash.</p>
     <div class="cmd-groups reveal">
       <div class="cmd-group">
         <div class="cmd-group-title">Session commands</div>
@@ -539,8 +539,8 @@ footer .container { display: flex; justify-content: space-between; align-items: 
 <section class="integrations" id="integrations">
   <div class="container">
     <div class="section-label reveal">Integrations</div>
-    <h2 class="section-title reveal">Works alone. Gets better<br>with integrations.</h2>
-    <p class="section-desc reveal">FonteOS works fine with just markdown files. Integrations add capabilities when you need them.</p>
+    <h2 class="section-title reveal">Built for integrations.<br>Runs fine without them.</h2>
+    <p class="section-desc reveal">FonteOS works standalone from day one. When you're ready to connect a task manager or research tool, the system walks you through the setup. Each integration is optional and takes minutes.</p>
     <div class="integration-grid reveal">
       <div class="integration-card"><div class="integration-card-name">Linear</div><div class="integration-card-type">Task management</div><p>Two-way sync. Claude reads Todo issues, moves to In Progress on pickup, posts structured comments, proposes status changes. Projects map 1:1 to springs.</p><span class="ready">&check; MCP ready</span></div>
       <div class="integration-card"><div class="integration-card-name">Asana</div><div class="integration-card-type">Task management</div><p>Same workflow, different tool. First-run setup asks which task manager you use — or none.</p><span class="ready">&check; MCP ready</span></div>
@@ -571,8 +571,8 @@ footer .container { display: flex; justify-content: space-between; align-items: 
 <section class="quickstart" id="quickstart">
   <div class="container">
     <div class="section-label reveal">Quickstart</div>
-    <h2 class="section-title reveal">Clone it. Start it.<br>You're running in 2 minutes.</h2>
-    <p class="section-desc reveal">First run walks you through setup. Every run after loads your world in seconds.</p>
+    <h2 class="section-title reveal">Clone it. Start it.<br>The tutorial does the rest.</h2>
+    <p class="section-desc reveal">First /start detects you're new and walks you through setup — who you are, what you're building, which tools to connect. Takes about 5 minutes. Every session after that loads your world instantly.</p>
     <div class="terminal reveal">
       <div class="terminal-bar"><div class="terminal-dot"></div><div class="terminal-dot"></div><div class="terminal-dot"></div><span class="terminal-label">zsh</span></div>
       <div class="terminal-body">
@@ -582,8 +582,8 @@ footer .container { display: flex; justify-content: space-between; align-items: 
         <div class="terminal-line"><span class="terminal-prompt">$</span><span class="terminal-cmd">claude</span></div>
         <div class="terminal-out">Claude Code ready.</div>
         <div class="terminal-line"><span class="terminal-prompt">&gt;</span><span class="terminal-slash">/start</span></div>
-        <div class="terminal-out">Reading core.md... Loading session state... Checking integrations...</div>
-        <div class="terminal-out" style="color: #3ecf8e;">Context loaded. What are we working on?</div>
+        <div class="terminal-out">First run detected. Let's set up your vault.</div>
+        <div class="terminal-out" style="color: #3ecf8e;">What's your name? What are you building?</div>
       </div>
     </div>
   </div>
